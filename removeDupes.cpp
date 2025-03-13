@@ -28,9 +28,6 @@ Node* removeDuplicates(Node* head) {
 
         while (temp != nullptr) { // Loop creates O(n^2) time complexity
             // Traverse all nodes for each node (nested loop)
-            //if (temp->next == nullptr) {
-            //    break;
-            //}
             
             if (temp->data == current->data) { // Check if the next node has the same data as the current node
                 // Assign the duplicate node
@@ -83,10 +80,6 @@ int main() {
     head->next->next->next->prev = head->next->next;
     head->next->next->next->next = new Node(40);
     head->next->next->next->next->prev = head->next->next->next;
-    head->next->next->next->next->next = new Node(30);
-    head->next->next->next->next->next->prev = head->next->next->next->next;
-    head->next->next->next->next->next->next = new Node(10);
-    head->next->next->next->next->next->next->prev = head->next->next->next->next->next;
 
     head = removeDuplicates(head);
 
