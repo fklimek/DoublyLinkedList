@@ -1,0 +1,96 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* prev;
+
+    Node(int val) {
+        data = val;
+        next = nullptr;
+        prev = nullptr;
+    }
+};
+
+//Write the function to remove duplicates 
+
+Node* removeDuplicates(Node* head) {
+    // Variables used
+    Node* current = head;
+    Node* temp = nullptr;
+    Node* duplicate = nullptr;
+
+    while (current != nullptr) { // Loop creates O(n) time complexity
+        // Traverses one at a time if a link/data exists
+        temp = current->next;
+
+        while (temp != nullptr) { // Loop creates O(n^2) time complexity
+            // Traverse all nodes for each node (nested loop)
+            //if (temp->next == nullptr) {
+            //    break;
+            //}
+            
+            if (temp->data == current->data) { // Check if the next node has the same data as the current node
+                // Assign the duplicate node
+                duplicate = temp;
+
+                // Re-link the nodes
+                if (duplicate->prev)
+                  temp->prev->next = temp->next;
+
+                // Re-link the previous node
+                if (duplicate->next)
+                  temp->next->prev = temp->prev;
+                  
+                // Reset temp to node before duplicate (prevents loop from running more than needed.)
+                temp = duplicate->prev;
+
+                // Delete the duplicate
+                delete duplicate;
+                duplicate = nullptr;
+              
+            }
+            else {
+                temp = temp->next; // Traverse to the next node to continue the search
+            } 
+        }
+
+        current = current->next; // Traverse to the next node
+    }
+
+    return head;
+}
+
+void printList(Node* head) {
+    Node* curr = head;
+    while (curr != nullptr) {
+        cout << curr->data << " ";
+        curr = curr->next;
+    }
+    cout << endl;
+}
+int main() {
+    // Create a doubly linked list:
+    // 10 <-> 20 <-> 30 <-> 20 <-> 40
+    Node* head = new Node(10);
+    head->next = new Node(20);
+    head->next->prev = head;
+    head->next->next = new Node(30);
+    head->next->next->prev = head->next;
+    head->next->next->next = new Node(20);
+    head->next->next->next->prev = head->next->next;
+    head->next->next->next->next = new Node(40);
+    head->next->next->next->next->prev = head->next->next->next;
+    head->next->next->next->next->next = new Node(30);
+    head->next->next->next->next->next->prev = head->next->next->next->next;
+    head->next->next->next->next->next->next = new Node(10);
+    head->next->next->next->next->next->next->prev = head->next->next->next->next->next;
+
+    head = removeDuplicates(head);
+
+    printList(head);
+
+    return 0;
+}
